@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | Secure Notepad</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <div class="wrapper" style="width: 500px;">
+        <h1>Your Secure Notepad</h1>
+
+        <form method="post" style="margin-top: 20px;">
+            <div class="input-box" style="height: auto;">
+                <textarea name="note" placeholder="Write your note here..." required
+                    style="width: 100%; border-radius: 15px; padding: 15px;"></textarea>
+            </div>
+            <button type="submit" class="btn">Save Note</button>
+        </form>
+
+        <h3 style="margin-top: 30px; text-align: center;">Your Notes</h3>
+        <ul style="list-style-type: none; padding: 0; margin-top: 15px;">
+            {% for note in notes %}
+            <li
+                style="background: rgba(255, 255, 255, 0.1); padding: 10px 15px; border-radius: 10px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
+                <span>{{ note[2] }}</span>
+                <a href="/delete/{{ note[0] }}"
+                    style="color: #ff4d4d; font-size: 18px; margin-top: 0; text-decoration: none;">❌</a>
+            </li>
+            {% endfor %}
+        </ul>
+
+        <div class="register-link" style="margin-top: 30px;">
+            <p><a href="/logout">Logout</a></p>
+        </div>
+    </div>
+</body>
+
+</html>
