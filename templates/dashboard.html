@@ -1,80 +1,111 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard | Secure Notepad</title>
+    <title>Online Secure Notepad Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Links to your Flask static folder -->
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-
 <body>
+
+    <!-- Header -->
     <header class="header">
         <div class="header-left">
-            <i class="fa fa-file-lines"></i>
+            <i class="fa fa-file-text"></i>
             <span>Secure</span>
             <span class="brand-notes">Notepad</span>
         </div>
         <div class="header-right">
-            <a href="/logout" aria-label="Logout" title="Logout"><i
-                    class="fa-solid fa-arrow-right-from-bracket"></i></a>
+            <!-- Example user logout route -->
+            <a href="{{ url_for('logout') }}" title="Logout">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i>
+            </a>
+            <i class="fa-regular fa-circle-user"></i>
         </div>
     </header>
 
+    <!-- Main Content -->
     <div class="app-container">
+        
+        <!-- Left Sidebar: Folders -->
         <aside class="sidebar-left">
             <ul class="folder-list">
-                <li class="folder-item active"><i class="fa-regular fa-folder-open"></i> All Notes</li>
-                <li class="folder-item"><i class="fa-regular fa-folder"></i> Private Notes</li>
+                <a href="{{ url_for('dashboard') }}" class="folder-item active">
+                    <i class="fa-regular fa-folder"></i> All Notes
+                </a>
             </ul>
-            <div class="account-link"><i class="fa-regular fa-circle-user"></i> Signed in securely</div>
+            <button class="new-folder-btn" onclick="document.getElementById('new-note-form').submit();">
+                <i class="fa-solid fa-circle-plus"></i> New Note
+            </button>
         </aside>
 
+        <!-- Middle Sidebar: Note List -->
         <aside class="sidebar-middle">
-            <div class="notes-heading">
-                <div><span class="eyebrow">Your collection</span>
-                    <h1>Your Notes</h1>
-                </div>
-                <span class="note-count">{{ notes|length }}</span>
-            </div>
             <div class="search-container">
-                <div class="search-bar"><i class="fa-solid fa-magnifying-glass"></i><input type="text"
-                        placeholder="Search all notes" aria-label="Search all notes"></div>
+                <div class="search-bar">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" placeholder="Search all notes">
+                </div>
             </div>
+            
             <ul class="notes-list">
+                <!-- Jinja Loop for Database Notes -->
                 {% for note in notes %}
-                <li class="note-card">
-                    <div class="note-card-title">Note {{ loop.index }}</div>
-                    <div class="note-card-preview">{{ note[2] }}</div>
-                    <div class="note-card-footer">
-                        <span><i class="fa-regular fa-folder"></i> Private</span>
-                        <a class="delete-note" href="/delete/{{ note[0] }}" aria-label="Delete note"
-                            title="Delete note"><i class="fa-regular fa-trash-can"></i></a>
+                <a href="{{ url_for('dashboard', note_id=note.id) }}" class="note-card">
+                    <div class="note-card-title">{{ note.title or 'Untitled Note' }}</div>
+                    <div class="note-card-preview">
+                        <span class="note-card-date">{{ note.date_created }}</span>
                     </div>
-                </li>
+                </a>
+                {% else %}
+                <div style="padding: 20px; text-align: center; color: var(--text-secondary); font-size: 14px;">
+                    No notes yet. Create one!
+                </div>
                 {% endfor %}
             </ul>
         </aside>
 
+        <!-- Right Panel: Editor -->
         <main class="editor-pane">
-            <div class="editor-toolbar">
-                <div class="toolbar-left"><i class="fa-regular fa-trash-can"></i></div>
-                <div class="toolbar-center"><span class="format-button">Aa</span><i
-                        class="fa-solid fa-list-check"></i><i class="fa-solid fa-table"></i></div>
-                <div class="toolbar-right"><i class="fa-solid fa-arrow-up-from-bracket"></i><i
-                        class="fa-regular fa-pen-to-square"></i></div>
-            </div>
-            <form class="editor-form" method="post">
-                <textarea name="note" class="editor-content" placeholder="Start writing something worth keeping..."
-                    required></textarea>
-                <div class="editor-footer">
-                    <span><i class="fa-solid fa-lock"></i> Encrypted note</span>
-                    <button type="submit" class="btn"><i class="fa-solid fa-check"></i> Save Note</button>
+            <!-- Form to handle saving to MySQL via Flask -->
+            <form id="editor-form" action="{{ url_for('save_note') }}" method="POST" style="display: flex; flex-direction: column; flex: 1;">
+                
+                <!-- Hidden ID field for updating existing notes -->
+                <input type="hidden" name="note_id" value="{{ current_note.id if current_note else '' }}">
+                
+                <div class="editor-toolbar">
+                    <div class="toolbar-left">
+                        {% if current_note %}
+                        <a href="{{ url_for('delete_note', note_id=current_note.id) }}" style="color: var(--accent-yellow);">
+                            <i class="fa-regular fa-trash-can"></i>
+                        </a>
+                        {% endif %}
+                    </div>
+                    <div class="toolbar-center">
+                        <span style="font-weight: bold; font-family: serif; font-size: 16px; cursor: pointer;">Aa</span>
+                        <i class="fa-solid fa-list-check"></i>
+                    </div>
+                    <div class="toolbar-right">
+                        <!-- Save Button -->
+                        <button type="submit" title="Save Note">
+                            <i class="fa-regular fa-floppy-disk"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="editor-content">
+                    <input type="text" name="title" class="editor-title-input" placeholder="Title" value="{{ current_note.title if current_note else '' }}">
+                    <textarea name="content" class="editor-textarea" placeholder="Start typing...">{{ current_note.content if current_note else '' }}</textarea>
                 </div>
             </form>
+
+            <!-- Hidden form for creating a new blank note quickly -->
+            <form id="new-note-form" action="{{ url_for('create_note') }}" method="POST" style="display: none;"></form>
+
         </main>
     </div>
-</body>
 
+</body>
 </html>
