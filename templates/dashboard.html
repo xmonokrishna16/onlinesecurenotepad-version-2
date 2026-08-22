@@ -5,36 +5,75 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard | Secure Notepad</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 
 <body>
-    <div class="wrapper" style="width: 500px;">
-        <h1>Your Secure Notepad</h1>
-
-        <form method="post" style="margin-top: 20px;">
-            <div class="input-box" style="height: auto;">
-                <textarea name="note" placeholder="Write your note here..." required
-                    style="width: 100%; border-radius: 15px; padding: 15px;"></textarea>
-            </div>
-            <button type="submit" class="btn">Save Note</button>
-        </form>
-
-        <h3 style="margin-top: 30px; text-align: center;">Your Notes</h3>
-        <ul style="list-style-type: none; padding: 0; margin-top: 15px;">
-            {% for note in notes %}
-            <li
-                style="background: rgba(255, 255, 255, 0.1); padding: 10px 15px; border-radius: 10px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
-                <span>{{ note[2] }}</span>
-                <a href="/delete/{{ note[0] }}"
-                    style="color: #ff4d4d; font-size: 18px; margin-top: 0; text-decoration: none;">❌</a>
-            </li>
-            {% endfor %}
-        </ul>
-
-        <div class="register-link" style="margin-top: 30px;">
-            <p><a href="/logout">Logout</a></p>
+    <header class="header">
+        <div class="header-left">
+            <i class="fa fa-file-lines"></i>
+            <span>Secure</span>
+            <span class="brand-notes">Notepad</span>
         </div>
+        <div class="header-right">
+            <a href="/logout" aria-label="Logout" title="Logout"><i
+                    class="fa-solid fa-arrow-right-from-bracket"></i></a>
+        </div>
+    </header>
+
+    <div class="app-container">
+        <aside class="sidebar-left">
+            <ul class="folder-list">
+                <li class="folder-item active"><i class="fa-regular fa-folder-open"></i> All Notes</li>
+                <li class="folder-item"><i class="fa-regular fa-folder"></i> Private Notes</li>
+            </ul>
+            <div class="account-link"><i class="fa-regular fa-circle-user"></i> Signed in securely</div>
+        </aside>
+
+        <aside class="sidebar-middle">
+            <div class="notes-heading">
+                <div><span class="eyebrow">Your collection</span>
+                    <h1>Your Notes</h1>
+                </div>
+                <span class="note-count">{{ notes|length }}</span>
+            </div>
+            <div class="search-container">
+                <div class="search-bar"><i class="fa-solid fa-magnifying-glass"></i><input type="text"
+                        placeholder="Search all notes" aria-label="Search all notes"></div>
+            </div>
+            <ul class="notes-list">
+                {% for note in notes %}
+                <li class="note-card">
+                    <div class="note-card-title">Note {{ loop.index }}</div>
+                    <div class="note-card-preview">{{ note[2] }}</div>
+                    <div class="note-card-footer">
+                        <span><i class="fa-regular fa-folder"></i> Private</span>
+                        <a class="delete-note" href="/delete/{{ note[0] }}" aria-label="Delete note"
+                            title="Delete note"><i class="fa-regular fa-trash-can"></i></a>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+        </aside>
+
+        <main class="editor-pane">
+            <div class="editor-toolbar">
+                <div class="toolbar-left"><i class="fa-regular fa-trash-can"></i></div>
+                <div class="toolbar-center"><span class="format-button">Aa</span><i
+                        class="fa-solid fa-list-check"></i><i class="fa-solid fa-table"></i></div>
+                <div class="toolbar-right"><i class="fa-solid fa-arrow-up-from-bracket"></i><i
+                        class="fa-regular fa-pen-to-square"></i></div>
+            </div>
+            <form class="editor-form" method="post">
+                <textarea name="note" class="editor-content" placeholder="Start writing something worth keeping..."
+                    required></textarea>
+                <div class="editor-footer">
+                    <span><i class="fa-solid fa-lock"></i> Encrypted note</span>
+                    <button type="submit" class="btn"><i class="fa-solid fa-check"></i> Save Note</button>
+                </div>
+            </form>
+        </main>
     </div>
 </body>
 
