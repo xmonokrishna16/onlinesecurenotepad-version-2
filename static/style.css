@@ -130,3 +130,378 @@ a:hover {
 .register-link p a:hover {
     text-decoration: underline;
 }
+
+/* Dashboard notepad layout */
+:root {
+    --bg-header: #f6f6f6;
+    --bg-sidebar: #f4f4f5;
+    --bg-main: #ffffff;
+    --bg-item-active: #e5e5ea;
+    --bg-folder-active: #ffcc00;
+    --text-primary: #1c1c1e;
+    --text-secondary: #8e8e93;
+    --accent-yellow: #d9a01c;
+    --border-color: #d1d1d6;
+    --search-bg: #e3e3e8;
+}
+
+body {
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    padding: 0;
+}
+
+.header {
+    height: 48px;
+    background-color: var(--bg-header);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    border-bottom: 1px solid var(--border-color);
+    flex-shrink: 0;
+}
+
+.header-left,
+.header-right,
+.toolbar-left,
+.toolbar-right,
+.toolbar-center {
+    display: flex;
+    align-items: center;
+}
+
+.header-left {
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.header-left i {
+    font-size: 20px;
+    margin-right: 8px;
+}
+
+.brand-notes {
+    color: var(--accent-yellow);
+    font-weight: 600;
+    margin-left: 4px;
+}
+
+.header-right {
+    gap: 20px;
+    font-size: 18px;
+}
+
+.header a {
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.app-container {
+    display: flex;
+    flex: 1;
+    min-height: 0;
+}
+
+.sidebar-left,
+.sidebar-middle {
+    background-color: var(--bg-sidebar);
+    border-right: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-left {
+    width: 220px;
+    justify-content: space-between;
+    flex-shrink: 0;
+}
+
+.folder-list,
+.notes-list {
+    list-style: none;
+}
+
+.folder-list {
+    padding: 12px 10px;
+}
+
+.folder-item {
+    display: flex;
+    align-items: center;
+    padding: 9px 12px;
+    border-radius: 6px;
+    margin-bottom: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.folder-item i {
+    margin-right: 12px;
+    font-size: 16px;
+    color: var(--accent-yellow);
+}
+
+.folder-item.active {
+    background-color: var(--bg-folder-active);
+    color: #000;
+}
+
+.folder-item.active i {
+    color: #000;
+}
+
+.account-link {
+    padding: 15px 20px;
+    color: var(--text-secondary);
+    font-size: 13px;
+}
+
+.account-link i {
+    margin-right: 7px;
+}
+
+.sidebar-middle {
+    width: 320px;
+    flex-shrink: 0;
+}
+
+.notes-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 15px 4px;
+}
+
+.notes-heading h1 {
+    font-size: 21px;
+    margin-top: 3px;
+}
+
+.eyebrow {
+    color: var(--text-secondary);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.note-count {
+    background: var(--bg-item-active);
+    border-radius: 12px;
+    color: var(--text-secondary);
+    font-size: 12px;
+    padding: 3px 8px;
+}
+
+.search-container {
+    padding: 15px;
+}
+
+.search-bar {
+    background-color: var(--search-bg);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    padding: 7px 12px;
+    color: var(--text-secondary);
+}
+
+.search-bar i {
+    font-size: 14px;
+    margin-right: 8px;
+}
+
+.search-bar input {
+    background: transparent;
+    border: 0;
+    color: var(--text-primary);
+    font-size: 14px;
+    outline: none;
+    width: 100%;
+    padding: 0;
+    height: auto;
+}
+
+.search-bar input::placeholder {
+    color: var(--text-secondary);
+}
+
+.notes-list {
+    padding: 0 10px;
+    overflow-y: auto;
+}
+
+.note-card {
+    background-color: var(--bg-item-active);
+    padding: 12px 15px;
+    border-radius: 8px;
+    margin-bottom: 8px;
+}
+
+.note-card-title {
+    font-weight: 600;
+    font-size: 15px;
+    margin-bottom: 5px;
+}
+
+.note-card-preview {
+    color: var(--text-secondary);
+    font-size: 13px;
+    line-height: 1.4;
+    max-height: 38px;
+    overflow: hidden;
+    word-break: break-word;
+}
+
+.note-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 9px;
+    color: var(--text-secondary);
+    font-size: 12px;
+}
+
+.note-card-footer i {
+    margin-right: 5px;
+}
+
+.delete-note {
+    color: var(--text-secondary);
+    margin: 0;
+    font-size: 14px;
+}
+
+.delete-note:hover {
+    color: #c0392b;
+}
+
+.editor-pane {
+    flex: 1;
+    background-color: var(--bg-main);
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.editor-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 25px;
+    color: var(--accent-yellow);
+    font-size: 18px;
+}
+
+.toolbar-center {
+    gap: 25px;
+    margin-left: -50px;
+}
+
+.toolbar-right {
+    gap: 20px;
+}
+
+.editor-toolbar i,
+.format-button {
+    cursor: pointer;
+}
+
+.format-button {
+    font-weight: bold;
+    font-family: serif;
+    font-size: 16px;
+}
+
+.editor-form {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-height: 0;
+}
+
+.editor-content {
+    flex: 1;
+    width: 100%;
+    height: auto;
+    border: 0;
+    outline: 0;
+    resize: none;
+    padding: 20px 25px;
+    color: var(--text-primary);
+    font: 16px/1.6 Georgia, serif;
+    border-radius: 0;
+}
+
+.editor-content::placeholder {
+    color: #b0b0b5;
+}
+
+.editor-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 25px 20px;
+    color: var(--text-secondary);
+    font-size: 12px;
+}
+
+.editor-footer i {
+    margin-right: 6px;
+}
+
+.btn {
+    width: auto;
+    height: auto;
+    background: var(--accent-yellow);
+    border: 0;
+    border-radius: 6px;
+    box-shadow: none;
+    color: #1c1c1e;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    margin: 0;
+    padding: 10px 16px;
+}
+
+.btn i {
+    margin-right: 6px;
+}
+
+@media (max-width: 800px) {
+    .sidebar-left {
+        display: none;
+    }
+
+    .sidebar-middle {
+        width: 230px;
+    }
+
+    .toolbar-center {
+        margin-left: 0;
+    }
+}
+
+@media (max-width: 560px) {
+    .sidebar-middle {
+        display: none;
+    }
+
+    .editor-toolbar {
+        padding: 15px;
+    }
+
+    .editor-content {
+        padding: 20px 15px;
+    }
+
+    .editor-footer {
+        padding: 15px;
+    }
+}
